@@ -36,6 +36,18 @@ public class ReportRepositoryAdapter implements ReportRepository {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Report> findAllValidated() {
+        return jpa.findByStatus(ReportStatus.VALIDATED.name()).stream()
+            .map(this::toDomain)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpa.deleteById(id);
+    }
+
     private ReportEntity toEntity(Report r) {
         ReportEntity e = new ReportEntity();
         e.setId(r.getId());

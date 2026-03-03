@@ -9,4 +9,6 @@ public interface ReportRepository {
     Report save(Report report);
     Optional<Report> findById(Long id);
     List<Report> findAll();
+    List<Report> findAllValidated();
+    void deleteById(Long id);
 }

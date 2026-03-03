@@ -1,5 +1,6 @@
 package com.reportexport.domain.model;
 
+import com.reportexport.domain.model.event.ReportExportedEvent;
 import com.reportexport.domain.model.event.ReportValidatedEvent;
 import com.reportexport.domain.model.valueobject.ReportContent;
 import com.reportexport.domain.model.valueobject.ReportTitle;
@@ -55,6 +56,15 @@ public class Report {
         this.status    = ReportStatus.VALIDATED;
         this.updatedAt = LocalDateTime.now();
         domainEvents.add(new ReportValidatedEvent(this.id));
+    }
+
+    public void markAsExported(String format) {
+        if (status != ReportStatus.VALIDATED)
+            throw new IllegalStateException(
+                "Cannot export report with status: " + status);
+        this.status    = ReportStatus.EXPORTED;
+        this.updatedAt = LocalDateTime.now();
+        domainEvents.add(new ReportExportedEvent(this.id, format));
     }
 
     public List<Object> getDomainEvents()  { return Collections.unmodifiableList(domainEvents); }
